@@ -60,22 +60,22 @@
     var onePart = Math.round(maxTime / BAR_HEIGHT);
 
     names.forEach(function (name, i) {
-      renderToCanvas(ctx, function () {
+      renderToCanvas(ctx, function (protectedCtx) {
         var barHeight = Math.round(times[i] / onePart);
         var verticalIndent = BAR_HEIGHT - barHeight;
         var xPosition = CLOUD_X + (HORIZONTAL_GAP + BAR_WIDTH) * (i + 1) - BAR_WIDTH;
         var yPosition = CLOUD_Y + VERTICAL_GAP + verticalIndent;
 
         if (name === 'Вы') {
-          ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+          protectedCtx.fillStyle = 'rgba(255, 0, 0, 1)';
         } else {
-          ctx.fillStyle = getBlueTint();
+          protectedCtx.fillStyle = getBlueTint();
         }
 
-        ctx.fillRect(xPosition, yPosition, BAR_WIDTH, barHeight);
-        ctx.fillStyle = '#000';
-        ctx.fillText(name, xPosition, yPosition + barHeight + FONT_GAP);
-        ctx.fillText(Math.round(times[i]), xPosition, yPosition - FONT_GAP / 2);
+        protectedCtx.fillRect(xPosition, yPosition, BAR_WIDTH, barHeight);
+        protectedCtx.fillStyle = '#000';
+        protectedCtx.fillText(name, xPosition, yPosition + barHeight + FONT_GAP);
+        protectedCtx.fillText(Math.round(times[i]), xPosition, yPosition - FONT_GAP / 2);
       });
     });
   };

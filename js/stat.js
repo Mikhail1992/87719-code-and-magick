@@ -47,8 +47,12 @@
   };
 
   window.renderStatistics = function (ctx, names, times) {
-    renderCloud(ctx, CLOUD_X + 10, CLOUD_Y + 10, 'rgba(0, 0, 0, .7)');
-    renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
+    renderToCanvas(ctx, function () {
+      renderCloud(ctx, CLOUD_X + 10, CLOUD_Y + 10, 'rgba(0, 0, 0, .7)');
+    });
+    renderToCanvas(ctx, function () {
+      renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
+    });
 
     renderToCanvas(ctx, renderCloudHead);
 
@@ -56,7 +60,7 @@
     var onePart = Math.round(maxTime / BAR_HEIGHT);
 
     names.forEach(function (name, i) {
-      renderToCanvas(ctx, function (ctx) {
+      renderToCanvas(ctx, function () {
         var barHeight = Math.round(times[i] / onePart);
         var verticalIndent = BAR_HEIGHT - barHeight;
         var xPosition = CLOUD_X + (HORIZONTAL_GAP + BAR_WIDTH) * (i + 1) - BAR_WIDTH;

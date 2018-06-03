@@ -41,7 +41,9 @@
   };
 
   var renderToCanvas = function (ctx, fn) {
-    return fn(ctx);
+    ctx.save();
+    fn(ctx);
+    ctx.restore();
   };
 
   window.renderStatistics = function (ctx, names, times) {
@@ -54,21 +56,23 @@
     var onePart = Math.round(maxTime / BAR_HEIGHT);
 
     names.forEach(function (name, i) {
-      var barHeight = Math.round(times[i] / onePart);
-      var verticalIndent = BAR_HEIGHT - barHeight;
-      var xPosition = CLOUD_X + (HORIZONTAL_GAP + BAR_WIDTH) * (i + 1) - BAR_WIDTH;
-      var yPosition = CLOUD_Y + VERTICAL_GAP + verticalIndent;
+      renderToCanvas(ctx, function (ctx) {
+        var barHeight = Math.round(times[i] / onePart);
+        var verticalIndent = BAR_HEIGHT - barHeight;
+        var xPosition = CLOUD_X + (HORIZONTAL_GAP + BAR_WIDTH) * (i + 1) - BAR_WIDTH;
+        var yPosition = CLOUD_Y + VERTICAL_GAP + verticalIndent;
 
-      if (name === 'Вы') {
-        ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-      } else {
-        ctx.fillStyle = getBlueTint();
-      }
+        if (name === 'Вы') {
+          ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+        } else {
+          ctx.fillStyle = getBlueTint();
+        }
 
-      ctx.fillRect(xPosition, yPosition, BAR_WIDTH, barHeight);
-      ctx.fillStyle = '#000';
-      ctx.fillText(name, xPosition, yPosition + barHeight + FONT_GAP);
-      ctx.fillText(Math.round(times[i]), xPosition, yPosition - FONT_GAP);
+        ctx.fillRect(xPosition, yPosition, BAR_WIDTH, barHeight);
+        ctx.fillStyle = '#000';
+        ctx.fillText(name, xPosition, yPosition + barHeight + FONT_GAP);
+        ctx.fillText(Math.round(times[i]), xPosition, yPosition - FONT_GAP / 2);
+      });
     });
   };
 })();

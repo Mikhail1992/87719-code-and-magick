@@ -47,11 +47,11 @@
   };
 
   window.renderStatistics = function (ctx, names, times) {
-    renderToCanvas(ctx, function () {
-      renderCloud(ctx, CLOUD_X + 10, CLOUD_Y + 10, 'rgba(0, 0, 0, .7)');
+    renderToCanvas(ctx, function (protectedCtx) {
+      renderCloud(protectedCtx, CLOUD_X + 10, CLOUD_Y + 10, 'rgba(0, 0, 0, .7)');
     });
-    renderToCanvas(ctx, function () {
-      renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
+    renderToCanvas(ctx, function (protectedCtx) {
+      renderCloud(protectedCtx, CLOUD_X, CLOUD_Y, '#fff');
     });
 
     renderToCanvas(ctx, renderCloudHead);

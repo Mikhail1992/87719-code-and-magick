@@ -4,9 +4,7 @@
   var userDialog = document.querySelector('.setup');
   userDialog.classList.remove('hidden');
   var similarListElement = userDialog.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-    .content
-    .querySelector('.setup-similar-item');
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
   var names = [
     'Иван',
@@ -43,39 +41,22 @@
     'yellow',
     'green'
   ];
-  var getRandomElement = function (arr) {
-    var random = Math.round(Math.random() * arr.length);
-    return arr[random];
-  };
 
   var generateName = function (firstNames, surnames) {
-    var name = getRandomElement(firstNames);
-    var surname = getRandomElement(surnames);
+    var name = window.getRandomElement(firstNames);
+    var surname = window.getRandomElement(surnames);
     return name + ' ' + surname;
   };
 
-  var wizards = [
-    {
-      name: generateName(names, lastNames),
-      coatColor: getRandomElement(colors),
-      eyesColor: getRandomElement(eyesColor)
-    },
-    {
-      name: generateName(names, lastNames),
-      coatColor: getRandomElement(colors),
-      eyesColor: getRandomElement(eyesColor)
-    },
-    {
-      name: generateName(names, lastNames),
-      coatColor: getRandomElement(colors),
-      eyesColor: getRandomElement(eyesColor)
-    },
-    {
-      name: generateName(names, lastNames),
-      coatColor: getRandomElement(colors),
-      eyesColor: getRandomElement(eyesColor)
-    }
-  ];
+  var generateWizards = function () {
+    return Array(4).fill().map(function () {
+      return {
+        name: generateName(names, lastNames),
+        coatColor: window.getRandomElement(colors),
+        eyesColor: window.getRandomElement(eyesColor)
+      };
+    });
+  };
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
@@ -88,7 +69,7 @@
   };
 
   var fragment = document.createDocumentFragment();
-  wizards.forEach(function (wizard) {
+  generateWizards().forEach(function (wizard) {
     fragment.appendChild(renderWizard(wizard));
   });
   similarListElement.appendChild(fragment);

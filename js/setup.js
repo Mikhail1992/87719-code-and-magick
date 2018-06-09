@@ -43,8 +43,8 @@
   ];
 
   var generateName = function (firstNames, surnames) {
-    var name = window.getRandomElement(firstNames);
-    var surname = window.getRandomElement(surnames);
+    var name = window.utils.getRandomElement(firstNames);
+    var surname = window.utils.getRandomElement(surnames);
     return name + ' ' + surname;
   };
 
@@ -52,8 +52,8 @@
     return Array(4).fill().map(function () {
       return {
         name: generateName(names, lastNames),
-        coatColor: window.getRandomElement(colors),
-        eyesColor: window.getRandomElement(eyesColor)
+        coatColor: window.utils.getRandomElement(colors),
+        eyesColor: window.utils.getRandomElement(eyesColor)
       };
     });
   };

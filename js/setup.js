@@ -5,7 +5,6 @@
   var userDialogOpen = document.querySelector('.setup-open');
   var userDialogClose = document.querySelector('.setup-close');
   var userDialogOpenIcon = userDialogOpen.querySelector('.setup-open-icon');
-  var userDialogName = userDialog.querySelector('.setup-user-name');
   var currentWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
   var currentWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
   var currentWizardFireball = document.querySelector('.setup-fireball-wrap');
@@ -94,6 +93,7 @@
 
   userDialogOpen.addEventListener('click', function () {
     window.utils.showElement(userDialog);
+    userDialog.focus();
   });
 
   userDialogClose.addEventListener('click', function () {
@@ -113,13 +113,10 @@
   });
 
   userDialog.addEventListener('keydown', function (event) {
-    if (event.keyCode === 27) {
+    var target = event.target;
+    if (event.keyCode === 27 && target.nodeName !== 'INPUT') {
       window.utils.hideElement(userDialog);
     }
-  });
-
-  userDialogName.addEventListener('focus', function (event) {
-    event.stopPropagation();
   });
 
   currentWizardCoat.addEventListener('click', function () {

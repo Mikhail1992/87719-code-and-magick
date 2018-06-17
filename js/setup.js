@@ -2,7 +2,16 @@
 
 (function () {
   var userDialog = document.querySelector('.setup');
-  userDialog.classList.remove('hidden');
+  var userDialogOpen = document.querySelector('.setup-open');
+  var userDialogClose = document.querySelector('.setup-close');
+  var userDialogOpenIcon = userDialogOpen.querySelector('.setup-open-icon');
+  var userDialogName = userDialog.querySelector('.setup-user-name');
+  var currentWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
+  var currentWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
+  var currentWizardFireball = document.querySelector('.setup-fireball-wrap');
+  var currentWizardCoatInput = document.getElementsByName('coat-color')[0];
+  var currentWizardEyesInput = document.getElementsByName('eyes-color')[0];
+  var currentWizardFireballInput = document.getElementsByName('fireball-color')[0];
   var similarListElement = userDialog.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
@@ -41,6 +50,13 @@
     'yellow',
     'green'
   ];
+  var fireballColor = [
+    '#ee4830',
+    '#30a8ee',
+    '#5ce6c0',
+    '#e848d5',
+    '#e6e848'
+  ];
 
   var generateName = function (firstNames, surnames) {
     var name = window.utils.getRandomElement(firstNames);
@@ -75,4 +91,52 @@
   similarListElement.appendChild(fragment);
 
   userDialog.querySelector('.setup-similar').classList.remove('hidden');
+
+  userDialogOpen.addEventListener('click', function () {
+    window.utils.showElement(userDialog);
+  });
+
+  userDialogClose.addEventListener('click', function () {
+    window.utils.hideElement(userDialog);
+  });
+
+  userDialogClose.addEventListener('keydown', function () {
+    if (event.keyCode === 13) {
+      window.utils.hideElement(userDialog);
+    }
+  });
+
+  userDialogOpenIcon.addEventListener('keydown', function (event) {
+    if (event.keyCode === 13) {
+      window.utils.showElement(userDialog);
+    }
+  });
+
+  userDialog.addEventListener('keydown', function (event) {
+    if (event.keyCode === 27) {
+      window.utils.hideElement(userDialog);
+    }
+  });
+
+  userDialogName.addEventListener('focus', function (event) {
+    event.stopPropagation();
+  });
+
+  currentWizardCoat.addEventListener('click', function () {
+    var color = window.utils.getRandomElement(colors);
+    currentWizardCoatInput.value = color;
+    currentWizardCoat.style.fill = color;
+  });
+
+  currentWizardEyes.addEventListener('click', function () {
+    var color = window.utils.getRandomElement(eyesColor);
+    currentWizardEyesInput.value = color;
+    currentWizardEyes.style.fill = color;
+  });
+
+  currentWizardFireball.addEventListener('click', function () {
+    var color = window.utils.getRandomElement(fireballColor);
+    currentWizardFireballInput.value = color;
+    currentWizardFireball.style.background = color;
+  });
 })();

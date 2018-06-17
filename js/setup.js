@@ -86,9 +86,9 @@
   };
 
   var setRandomValue = function (list, input, node, rule) {
-    var color = window.utils.getRandomElement(list);
-    input.value = color;
-    node.style[rule] = color;
+    var value = window.utils.getRandomElement(list);
+    input.value = value;
+    node.style[rule] = value;
   };
 
   var fragment = document.createDocumentFragment();

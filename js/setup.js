@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
   var userDialog = document.querySelector('.setup');
   var userDialogOpen = document.querySelector('.setup-open');
   var userDialogClose = document.querySelector('.setup-close');
@@ -83,6 +85,12 @@
     return wizardElement;
   };
 
+  var setChoosedValue = function (colorList, input, node, colorRule) {
+    var color = window.utils.getRandomElement(colorList);
+    input.value = color;
+    node.style[colorRule] = color;
+  };
+
   var fragment = document.createDocumentFragment();
   generateWizards().forEach(function (wizard) {
     fragment.appendChild(renderWizard(wizard));
@@ -101,39 +109,33 @@
   });
 
   userDialogClose.addEventListener('keydown', function () {
-    if (event.keyCode === 13) {
+    if (event.keyCode === ENTER_KEYCODE) {
       window.utils.hideElement(userDialog);
     }
   });
 
   userDialogOpenIcon.addEventListener('keydown', function (event) {
-    if (event.keyCode === 13) {
+    if (event.keyCode === ENTER_KEYCODE) {
       window.utils.showElement(userDialog);
     }
   });
 
   userDialog.addEventListener('keydown', function (event) {
     var target = event.target;
-    if (event.keyCode === 27 && target.nodeName !== 'INPUT') {
+    if (event.keyCode === ESC_KEYCODE && target.nodeName !== 'INPUT') {
       window.utils.hideElement(userDialog);
     }
   });
 
   currentWizardCoat.addEventListener('click', function () {
-    var color = window.utils.getRandomElement(colors);
-    currentWizardCoatInput.value = color;
-    currentWizardCoat.style.fill = color;
+    setChoosedValue(colors, currentWizardCoatInput, currentWizardCoat, 'fill');
   });
 
   currentWizardEyes.addEventListener('click', function () {
-    var color = window.utils.getRandomElement(eyesColor);
-    currentWizardEyesInput.value = color;
-    currentWizardEyes.style.fill = color;
+    setChoosedValue(eyesColor, currentWizardEyesInput, currentWizardEyes, 'fill');
   });
 
   currentWizardFireball.addEventListener('click', function () {
-    var color = window.utils.getRandomElement(fireballColor);
-    currentWizardFireballInput.value = color;
-    currentWizardFireball.style.background = color;
+    setChoosedValue(fireballColor, currentWizardFireballInput, currentWizardFireball, 'background');
   });
 })();

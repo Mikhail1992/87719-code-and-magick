@@ -101,6 +101,7 @@
 
   userDialogOpen.addEventListener('click', function () {
     window.utils.showElement(userDialog);
+    userDialog.style = '';
     userDialog.focus();
   });
 

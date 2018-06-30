@@ -14,5 +14,32 @@
     showElement: function (node) {
       node.classList.remove('hidden');
     },
+
+    shuffle: function (array) {
+      var size = array.length;
+      var temp;
+      var index;
+
+      while (size > 0) {
+        index = Math.floor(Math.random() * size);
+        size--;
+        temp = array[size];
+        array[size] = array[index];
+        array[index] = temp;
+      }
+
+      return array;
+    },
+
+    generateShuffleArrayPart: function (arr, arrLength) {
+      var indexArr = Array(arr.length).fill().map(function (item, index) {
+        return index;
+      });
+      var shuffleIndexArr = window.utils.shuffle(indexArr);
+      var newArrayIndexes = shuffleIndexArr.slice(0, arrLength);
+      return newArrayIndexes.map(function (index) {
+        return arr[index];
+      });
+    }
   };
 })();

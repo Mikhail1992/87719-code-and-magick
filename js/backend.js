@@ -58,16 +58,4 @@
       xhr.send(FormData);
     },
   };
-  // var onError = function (message) {
-  //   console.error(message);
-  // };
-
-  // var onSuccess = function (data) {
-  //   console.log(data);
-  // };
-
-  // var form = document.querySelector('.setup-wizard-form');
-  // console.log(new FormData());
-  // var formData = new FormData(form);
-  // window.backend.save(formData, onSuccess, onError);
 })();

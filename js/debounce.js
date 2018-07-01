@@ -14,5 +14,5 @@
         fun();
       }, DEBOUNCE_INTERVAL);
     };
-  }
+  };
 })();

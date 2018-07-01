@@ -4,6 +4,10 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
+  var wizards = [];
+  var coatColorWizard;
+  var eyesColorWizard;
+
   var colors = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -41,12 +45,49 @@
     var value = window.utils.getRandomElement(args.list);
     args.input.value = value;
     args.node.style[args.rule] = value;
+    return value;
+  };
+
+  window.render = function (list, node) {
+    var fragment = document.createDocumentFragment();
+    node.innerHTML = '';
+    window.utils.generateArrayPart(list, 4).forEach(function (item) {
+      fragment.appendChild(renderWizard({
+        wizard: item,
+        parentNode: similarWizardTemplate,
+      }));
+    });
+
+    node.appendChild(fragment);
   };
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
   var userDialog = document.querySelector('.setup');
   var similarListElement = userDialog.querySelector('.setup-similar-list');
-  var fragment = document.createDocumentFragment();
+
+  var getRank = function (wizard) {
+    var rank = 0;
+
+    if (wizard.colorCoat === coatColorWizard) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColorWizard) {
+      rank += 1;
+    }
+
+    return rank;
+  };
+
+  var updateWizards = function () {
+    window.render(wizards.slice().
+      sort(function (left, right) {
+        var rankDiff = getRank(right) - getRank(left);
+        if (rankDiff === 0) {
+          rankDiff = wizards.indexOf(left) - wizards.indexOf(right);
+        }
+        return rankDiff;
+      }), similarListElement);
+  };
 
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
@@ -60,19 +101,11 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  var onSuccessLoadWizzards = function (data) {
-    var wizzards = window.utils.generateShuffleArrayPart(data, 4);
-
-    wizzards.forEach(function (wizard) {
-      fragment.appendChild(renderWizard({
-        wizard: wizard,
-        parentNode: similarWizardTemplate,
-      }));
-    });
-
-    similarListElement.appendChild(fragment);
+  var onSuccessLoadWizards = function (data) {
+    wizards = data;
+    updateWizards();
   };
-  window.backend.load(onSuccessLoadWizzards, errorHandler);
+  window.backend.load(onSuccessLoadWizards, errorHandler);
 
   userDialog.querySelector('.setup-similar').classList.remove('hidden');
   var userDialogOpen = document.querySelector('.setup-open');
@@ -108,24 +141,33 @@
 
   var currentWizardCoatInput = document.getElementsByName('coat-color')[0];
   var currentWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
+
+  window.wizard.onCoatChange = window.debounce(updateWizards);
+
   currentWizardCoat.addEventListener('click', function () {
-    setRandomValue({
+    coatColorWizard = setRandomValue({
       list: colors,
       input: currentWizardCoatInput,
       node: currentWizardCoat,
       rule: 'fill',
     });
+    window.wizard.onEyesChange();
   });
 
   var currentWizardEyesInput = document.getElementsByName('eyes-color')[0];
   var currentWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
+
+  window.wizard.onEyesChange = window.debounce(updateWizards);
+
   currentWizardEyes.addEventListener('click', function () {
-    setRandomValue({
+    eyesColorWizard = setRandomValue({
       list: eyesColor,
       input: currentWizardEyesInput,
       node: currentWizardEyes,
       rule: 'fill',
     });
+
+    window.wizard.onEyesChange();
   });
 
   var currentWizardFireballInput = document.getElementsByName('fireball-color')[0];
@@ -139,14 +181,14 @@
     });
   });
 
-  var wizzardsForm = document.querySelector('.setup-wizard-form');
-  wizzardsForm.addEventListener('submit', function (event) {
+  var wizardsForm = document.querySelector('.setup-wizard-form');
+  wizardsForm.addEventListener('submit', function (event) {
     event.preventDefault();
     var onSuccessSaveWizzard = function () {
       window.utils.hideElement(userDialog);
     };
 
-    var formData = new FormData(wizzardsForm);
+    var formData = new FormData(wizardsForm);
     window.backend.save(formData, onSuccessSaveWizzard, errorHandler);
   });
 })();

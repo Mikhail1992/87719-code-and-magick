@@ -31,12 +31,11 @@
       return array;
     },
 
-    generateShuffleArrayPart: function (arr, arrLength) {
+    generateArrayPart: function (arr, arrLength) {
       var indexArr = Array(arr.length).fill().map(function (item, index) {
         return index;
       });
-      var shuffleIndexArr = window.utils.shuffle(indexArr);
-      var newArrayIndexes = shuffleIndexArr.slice(0, arrLength);
+      var newArrayIndexes = indexArr.slice(0, arrLength);
       return newArrayIndexes.map(function (index) {
         return arr[index];
       });

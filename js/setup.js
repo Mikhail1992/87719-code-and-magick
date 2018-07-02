@@ -5,8 +5,6 @@
   var ENTER_KEYCODE = 13;
 
   var wizards = [];
-  var coatColorWizard;
-  var eyesColorWizard;
 
   var colors = [
     'rgb(101, 137, 164)',
@@ -61,6 +59,11 @@
     node.appendChild(fragment);
   };
 
+  var currentWizardCoatInput = document.getElementsByName('coat-color')[0];
+  var currentWizardEyesInput = document.getElementsByName('eyes-color')[0];
+  var coatColorWizard = currentWizardCoatInput.value;
+  var eyesColorWizard = currentWizardEyesInput.value;
+
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
   var userDialog = document.querySelector('.setup');
   var similarListElement = userDialog.querySelector('.setup-similar-list');
@@ -82,6 +85,7 @@
     window.render(wizards.slice().
       sort(function (left, right) {
         var rankDiff = getRank(right) - getRank(left);
+
         if (rankDiff === 0) {
           rankDiff = wizards.indexOf(left) - wizards.indexOf(right);
         }
@@ -105,6 +109,7 @@
     wizards = data;
     updateWizards();
   };
+
   window.backend.load(onSuccessLoadWizards, errorHandler);
 
   userDialog.querySelector('.setup-similar').classList.remove('hidden');
@@ -139,7 +144,6 @@
     }
   });
 
-  var currentWizardCoatInput = document.getElementsByName('coat-color')[0];
   var currentWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
 
   window.wizard.onCoatChange = window.debounce(updateWizards);
@@ -154,7 +158,6 @@
     window.wizard.onEyesChange();
   });
 
-  var currentWizardEyesInput = document.getElementsByName('eyes-color')[0];
   var currentWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
 
   window.wizard.onEyesChange = window.debounce(updateWizards);
